@@ -42,6 +42,11 @@ kind: Ingress
 metadata:
   name: mcp-ingress
   namespace: mcp
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/websocket-services: "fastmcp-service"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   rules:
   - host: mcp.dynaco.co
