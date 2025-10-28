@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Exponer puerto (FastMCP suele usar puerto 8000 por defecto)
-EXPOSE 8000
+EXPOSE 80
 
 # Comando para ejecutar la aplicación
 CMD ["fastmcp", "run", "main.py", "--transport", "http", "--host", "0.0.0.0", "--port", "80"]
