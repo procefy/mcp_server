@@ -6,6 +6,8 @@ class ExecuteQueryRequest(BaseModel):
     query: str
     model_config = ConfigDict(extra="ignore")
 
+
+
 def execute_query(request: ExecuteQueryRequest) -> list[dict]:
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
