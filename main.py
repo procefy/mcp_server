@@ -20,7 +20,7 @@ def execute_query(query: str) -> list[dict]:
     if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter"]):
         return [{"error": "Solo se permiten consultas SELECT seguras"}]
     
-    return execute_sql(request.query)
+    return execute_sql(query)
 
 @app.tool
 def describe_tables() -> dict:
