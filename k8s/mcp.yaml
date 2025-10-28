@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: mcp
-        image: ghcr.io/procefy/mcp_server:latest
+        image: ghcr.io/procefy/mcp:latest
         ports:
         - containerPort: 80
 ---
