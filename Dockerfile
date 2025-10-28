@@ -24,4 +24,4 @@ COPY . .
 EXPOSE 80
 
 # Comando para ejecutar la aplicación
-CMD ["fastmcp", "run", "main.py", "--transport", "http", "--host", "0.0.0.0", "--port", "80"]
+CMD ["fastmcp", "run", "main.py"]
