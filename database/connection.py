@@ -6,7 +6,7 @@ from sqlalchemy import create_engine, inspect, text
 #     user="founders",
 #     password="f0und3rs-*-"
 # 🔧 Ajusta tu cadena de conexión
-DB_URL = "postgresql+psycopg2://founders:f0und3rs-*-@190.146.2.119:5432/predios"
+DB_URL = "postgresql+psycopg2://founders:f0und3rs-*-@192.168.0.104:5432/knowledge_db"
 
 _engine = None
 
