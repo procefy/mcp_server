@@ -1,8 +1,12 @@
 # database/connection.py
 from sqlalchemy import create_engine, inspect, text
-
+#  host="190.146.2.119",
+#     port="5432",
+#     database="knowledge_db",
+#     user="founders",
+#     password="f0und3rs-*-"
 # 🔧 Ajusta tu cadena de conexión
-DB_URL = "postgresql+psycopg2://admin:admin@localhost:5432/predios"
+DB_URL = "postgresql+psycopg2://founders:f0und3rs-*-@190.146.2.119:5432/predios"
 
 _engine = None
 

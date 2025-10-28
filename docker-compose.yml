@@ -1,0 +1,47 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  # Base de datos PostgreSQL
+  postgres:
+    image: postgres:15
+    container_name: mcp_postgres
+    environment:
+      POSTGRES_DB: predios
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - mcp_network
+
+  # Servidor MCP
+  mcp_server:
+    build: .
+    container_name: mcp_server
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: predios
+      DB_USER: admin
+      DB_PASSWORD: admin
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    networks:
+      - mcp_network
+    volumes:
+      - .:/app
+    # Comando para desarrollo (recarga automática)
+    command: python main.py
+
+volumes:
+  postgres_data:
+
+networks:
+  mcp_network:
+    driver: bridge

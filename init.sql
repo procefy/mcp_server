@@ -1,8 +1,23 @@
+-- ==================================================
+-- ARCHIVO PRINCIPAL DE INICIALIZACIÓN
+-- Base de datos: predios
+-- Descripción: Script principal para inicializar la base de datos
+-- ==================================================
+
+-- NOTA: Este archivo ha sido reorganizado en scripts modulares
+-- Ubicación: /sql/
+-- 
+-- Para una instalación completa, ejecuta en orden:
+-- 1. sql/01_create_table_ilc_predio.sql
+-- 2. sql/04_insert_all_data_ilc_predio.sql (o los scripts de lotes)
+-- 3. sql/05_utilidades_mantenimiento.sql
+--
+-- También disponible: sql/03_consultas_utiles_ilc_predio.sql
+
 -- colsmart_preprod_migra.ilc_predio definition
 
--- Drop table
-
--- DROP TABLE colsmart_preprod_migra.ilc_predio;
+-- Eliminación de tabla (descomenta si necesitas recrear)
+-- DROP TABLE IF EXISTS ilc_predio CASCADE;
 
 CREATE TABLE ilc_predio (
 	objectid int4 NOT NULL,

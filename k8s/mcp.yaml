@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mcp-deployment
+  namespace: mcp
+  labels:
+    app: mcp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mcp
+  template:
+    metadata:
+      labels:
+        app: mcp
+    spec:
+      containers:
+      - name: mcp
+        image: mcp:latest
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mcp-service
+  namespace: mcp
+spec:
+  selector:
+    app: mcp
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mcp-ingress
+  namespace: mcp
+spec:
+  rules:
+  - host: mcp.dynaco.co
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mcp-service
+            port:
+              number: 80
