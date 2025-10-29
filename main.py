@@ -1,5 +1,6 @@
 # main.py
 from fastmcp import FastMCP
+from models.execute_query_input import ExecuteQueryInput
 from database.connection import describe_db, execute_sql, get_engine
 # from tools.execute_query import ExecuteQueryRequest
 
@@ -9,17 +10,17 @@ mcp = FastMCP("DBAgentServer", version="0.1.0")
 # Registra las tools
 
 @mcp.tool
-def execute_query(query: str) -> list[dict]:
+def execute_query(execute: ExecuteQueryInput) -> list[dict]:
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
     Usa con precaución: solo acepta SELECTs u operaciones seguras.
     """
     print("**" * 25)
-    print("Datos recibidos:", query)
-    print("Datos recibidos:", type(query))
+    print("Datos recibidos:", execute.query)
+    print("Datos recibidos:", type(execute.query))
     print("**" * 25)
     # Seguridad básica para evitar operaciones destructivas
-    lowered = query.strip().lower()
+    lowered = execute.query.strip().lower()
     if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter"]):
         return [{"error": "Solo se permiten consultas SELECT seguras"}]
 
