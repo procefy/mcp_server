@@ -1,4 +1,5 @@
 # main.py
+from typing import Optional
 from fastmcp import FastMCP
 # from models.execute_query_input import ExecuteQueryInput
 from database.connection import describe_db, execute_sql, get_engine
@@ -10,7 +11,7 @@ mcp = FastMCP("DBAgentServer", version="0.1.0")
 # Registra las tools
 
 @mcp.tool
-def execute_query(query: str, **kwargs) -> list[dict]:
+def execute_query(query: str, callToolId: Optional[str] = "None") -> list[dict]:
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
     Usa con precaución: solo acepta SELECTs u operaciones seguras.
@@ -18,7 +19,6 @@ def execute_query(query: str, **kwargs) -> list[dict]:
     print("**" * 25)
     print("Datos recibidos:", query)
     print("Datos recibidos:", type(query))
-    print("Campos extra ignorados:", kwargs)
     print("**" * 25)
     # Seguridad básica para evitar operaciones destructivas
     lowered = query.strip().lower()
