@@ -8,7 +8,6 @@ from database.connection import describe_db, execute_sql, get_engine
 mcp = FastMCP(
     "DBAgentServer",
     version="0.1.0",
-    transport="http",
     require_session=False,      # Desactiva sesiones obligatorias
     cors_enabled=True,          # Permite peticiones externas
 )
