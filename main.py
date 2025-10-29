@@ -5,12 +5,7 @@ from database.connection import describe_db, execute_sql, get_engine
 # from tools.execute_query import ExecuteQueryRequest
 
 # Crea el servidor FastMCP
-mcp = FastMCP(
-    "DBAgentServer",
-    version="0.1.0",
-    require_session=False,      # Desactiva sesiones obligatorias
-    cors_enabled=True,          # Permite peticiones externas
-)
+mcp = FastMCP("DBAgentServer", version="0.1.0")
 
 # Registra las tools
 
@@ -25,7 +20,7 @@ def execute_query(query: str) -> list[dict]:
     print("Datos recibidos:", type(query))
     print("**" * 25)
     # Seguridad básica para evitar operaciones destructivas
-    lowered = query.strip().lower()
+    lowered = execute.query.strip().lower()
     if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter"]):
         return [{"error": "Solo se permiten consultas SELECT seguras"}]
 

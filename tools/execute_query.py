@@ -1,11 +1,12 @@
 # tools/execute_query.py
+from typing import Dict, List
 from database.connection import execute_sql
 # from database.connection import execute_sql
 
 
 
 
-def execute_query(query: str) -> list[dict]:
+def execute_query(query: str) -> List[Dict]:
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
     Usa con precaución: solo acepta SELECTs u operaciones seguras.
