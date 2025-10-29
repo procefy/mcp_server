@@ -23,12 +23,12 @@ def execute_query(execute: ExecuteQueryRequest) -> list[dict]:
     return execute_sql(execute.query)
 
 @app.tool
-def describe_tables() -> dict:
+def describe_tables(execute: ExecuteQueryRequest) -> dict:
     """Devuelve la estructura de la base de datos (tablas y columnas)"""
     return describe_db()
 
 @app.tool
-def health_check() -> dict:
+def health_check(execute: ExecuteQueryRequest) -> dict:
     """Verifica que el servidor esté corriendo correctamente."""
     return {"status": "ok", "message": "MCP server activo"}
 
