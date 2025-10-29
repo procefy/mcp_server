@@ -5,12 +5,16 @@ from database.connection import execute_sql
 
 
 
-def execute_query(query: str) -> list[dict]:
+def execute_query(query) -> list[dict]:
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
     Usa con precaución: solo acepta SELECTs u operaciones seguras.
     """
     # Seguridad básica para evitar operaciones destructivas
+    print("**" * 25)
+    print("Datos recibidos:", query)
+    print("Datos recibidos:", type(query))
+    print("**" * 25)
     lowered = query.strip().lower()
     if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter"]):
         return [{"error": "Solo se permiten consultas SELECT seguras"}]
