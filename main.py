@@ -1,5 +1,5 @@
 # main.py
-from typing import List, Dict
+from typing import List, Dict, Any, Union
 from fastmcp import FastMCP
 from pydantic import BaseModel
 from database.connection import describe_db, execute_sql, get_engine
@@ -12,8 +12,7 @@ class ExecuteQueryInput(BaseModel):
     query: str
 
     class Config:
-        # Ignora cualquier campo adicional que mande n8n (toolCallId, tool, etc.)
-        extra = "ignore"
+        extra = "ignore"  # Ignora cualquier campo adicional como toolCallId, tool, etc.
 
 
 # ------------------------
@@ -26,15 +25,27 @@ mcp = FastMCP(
 
 
 # ------------------------
+# 🔹 MIDDLEWARE: Limpia toolCallId antes de validar
+# ------------------------
+@mcp.middleware("tool")
+async def strip_toolcallid(request, handler):
+    """Elimina toolCallId u otros campos inesperados antes de llegar al validador."""
+    if isinstance(request.data, dict):
+        request.data.pop("toolCallId", None)
+        request.data.pop("tool", None)
+    return await handler(request)
+
+
+# ------------------------
 # 🔹 TOOLS
 # ------------------------
 @mcp.tool
-def execute_query(input: ExecuteQueryInput | str | dict) -> list[dict]:
+def execute_query(input: Union[ExecuteQueryInput, str, dict]) -> List[Dict[str, Any]]:
     """
-    Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
+    Ejecuta un query SQL y retorna los resultados.
     Tolera entradas tipo string, dict o modelo Pydantic.
     """
-    # 🧩 Normaliza el input
+    # Normaliza el input
     if isinstance(input, str):
         query = input
     elif isinstance(input, dict):
@@ -47,22 +58,27 @@ def execute_query(input: ExecuteQueryInput | str | dict) -> list[dict]:
     print("Tipo:", type(input))
     print("**" * 25)
 
-    # Validación básica
+    # Seguridad básica
     lowered = query.strip().lower()
     if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter", "truncate"]):
         return [{"error": "Solo se permiten consultas SELECT seguras"}]
 
     try:
-        return execute_sql(query)
+        # Ejecuta el SQL y garantiza que devuelva lista de diccionarios
+        result = execute_sql(query)
+        if isinstance(result, list):
+            return result
+        elif result is None:
+            return []
+        else:
+            return [dict(result)]
     except Exception as e:
         return [{"error": str(e)}]
 
 
 @mcp.tool
-def describe_tables() -> Dict:
-    """
-    Devuelve la estructura de la base de datos (tablas y columnas).
-    """
+def describe_tables() -> Dict[str, Any]:
+    """Devuelve la estructura de la base de datos (tablas y columnas)."""
     print("--" * 25)
     print("describe_tables invocado")
     print("--" * 25)
@@ -70,10 +86,8 @@ def describe_tables() -> Dict:
 
 
 @mcp.tool
-def health_check() -> Dict[str, object]:
-    """
-    Verifica que el servidor esté corriendo correctamente.
-    """
+def health_check() -> Dict[str, Any]:
+    """Verifica que el servidor esté corriendo correctamente."""
     print("*-" * 25)
     print("health_check invocado")
     print("*-" * 25)
