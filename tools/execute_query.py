@@ -5,7 +5,7 @@ from database.connection import execute_sql
 
 
 
-def execute_query(query) -> list[dict]:
+def execute_query(query, toolCallId) -> list[dict]:
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
     Usa con precaución: solo acepta SELECTs u operaciones seguras.
