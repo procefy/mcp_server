@@ -29,28 +29,31 @@ mcp = FastMCP(
 # 🔹 TOOLS
 # ------------------------
 @mcp.tool
-def execute_query(input: ExecuteQueryInput) -> List[Dict]:
+def execute_query(input: ExecuteQueryInput | str | dict) -> list[dict]:
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
-    Solo permite SELECT (lectura segura), rechaza operaciones destructivas.
+    Tolera entradas tipo string, dict o modelo Pydantic.
     """
-    query = input.query.strip()
+    # 🧩 Normaliza el input
+    if isinstance(input, str):
+        query = input
+    elif isinstance(input, dict):
+        query = input.get("query", "")
+    else:
+        query = input.query
 
     print("**" * 25)
     print("Consulta recibida:", query)
-    print("Tipo:", type(query))
+    print("Tipo:", type(input))
     print("**" * 25)
 
-    lowered = query.lower()
-    palabras_peligrosas = ["drop", "delete", "update", "insert", "alter", "truncate"]
-    if any(p in lowered for p in palabras_peligrosas):
+    # Validación básica
+    lowered = query.strip().lower()
+    if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter", "truncate"]):
         return [{"error": "Solo se permiten consultas SELECT seguras"}]
 
-    # Ejecuta realmente el SQL contra tu motor
     try:
-        results = execute_sql(query)
-        # Aseguramos lista de diccionarios
-        return results or []
+        return execute_sql(query)
     except Exception as e:
         return [{"error": str(e)}]
 
