@@ -2,7 +2,7 @@
 from fastmcp import FastMCP
 # from models.execute_query_input import ExecuteQueryInput
 from database.connection import describe_db, execute_sql, get_engine
-from tools.execute_query import ExecuteQueryRequest
+# from tools.execute_query import ExecuteQueryRequest
 
 # Crea el servidor FastMCP
 mcp = FastMCP("DBAgentServer", version="0.1.0")
