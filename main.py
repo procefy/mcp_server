@@ -23,6 +23,7 @@ def execute_query(query: str) -> list[dict]:
     lowered = query.strip().lower()
     if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter"]):
         return [{"error": "Solo se permiten consultas SELECT seguras"}]
+    return execute_sql(query)
 
 @mcp.tool
 def describe_tables() -> dict:
