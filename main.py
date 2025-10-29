@@ -11,8 +11,11 @@ app = FastMCP("DBAgentServer", version="0.1.0")
 # Registra las tools
 
 @app.tool
-def execute_query(request: Union[ExecuteQueryRequest, dict]) -> list[dict]:
+def execute_query(request) -> list[dict]:
+    print("**" * 25)
     print("Datos recibidos:", request)
+    print("Datos recibidos:", type(request))
+    print("**" * 25)
 # def execute_query(request: ExecuteQueryRequest) -> list[dict]:
     # """
     # Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
