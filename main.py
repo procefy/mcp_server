@@ -10,7 +10,7 @@ mcp = FastMCP("DBAgentServer", version="0.1.0")
 # Registra las tools
 
 @mcp.tool
-def execute_query(execute: ExecuteQueryInput) -> list[dict]:
+def execute_query(execute: dict) -> list[dict]:
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
     Usa con precaución: solo acepta SELECTs u operaciones seguras.
