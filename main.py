@@ -10,51 +10,33 @@ mcp = FastMCP("DBAgentServer", version="0.1.0")
 
 @mcp.tool
 def execute_query(request: str) -> list[dict]:
-    print("**" * 25)
-    print("Datos recibidos:", request)
-    print("Datos recibidos:", type(request))
-    print("**" * 25)
-# def execute_query(request: ExecuteQueryRequest) -> list[dict]:
-    # """
-    # Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
-    # Usa con precaución: solo acepta SELECTs u operaciones seguras.
-    # """
-    # # Seguridad básica para evitar operaciones destructivas
-    # lowered = execute.query.strip().lower()
-    # if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter"]):
-    #     return [{"error": "Solo se permiten consultas SELECT seguras"}]
-
-    # return execute_sql(execute.query)
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
+    Usa con precaución: solo acepta SELECTs u operaciones seguras.
     """
-    if isinstance(request, dict):
-        # Crear una instancia del modelo ignorando campos adicionales
-        request = ExecuteQueryRequest(**request)
-
-    # Seguridad básica para evitar operaciones destructivas
-    lowered = request.query.strip().lower()
-    if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter"]):
-        return [{"error": "Solo se permiten consultas SELECT seguras"}]
-    
-    return execute_sql(request.query)
-
-@mcp.tool
-def describe_tables(request) -> dict:
-    print("--" * 25)
+    print("**" * 25)
     print("Datos recibidos:", request)
     print("Datos recibidos:", type(request))
-    print("--" * 25)
+    print("**" * 25)
+    # Seguridad básica para evitar operaciones destructivas
+    lowered = query.strip().lower()
+    if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter"]):
+        return [{"error": "Solo se permiten consultas SELECT seguras"}]
+
+@mcp.tool
+def describe_tables() -> dict:
     """Devuelve la estructura de la base de datos (tablas y columnas)"""
+    print("--" * 25)
+    print("Datos recibidos:")
+    print("Datos recibidos:")
+    print("--" * 25)
     return describe_db()
 
 @mcp.tool
-def health_check(request) -> dict:
-    print("*-" * 25)
-    print("Datos recibidos:", request)
-    print("Datos recibidos:", type(request))
-    print("*-" * 25)
+def health_check() -> dict:
     """Verifica que el servidor esté corriendo correctamente."""
+    print("*-" * 25)
+    print("*-" * 25)
     return {"status": "ok", "message": "MCP server activo"}
 
 if __name__ == "__main__":
