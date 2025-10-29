@@ -1,8 +1,8 @@
 # main.py
 from fastmcp import FastMCP
-# from models.execute_query_input import ExecuteQueryInput
+from models.execute_query_input import ExecuteQueryInput
 from database.connection import describe_db, execute_sql, get_engine
-from tools.execute_query import ExecuteQueryRequest
+# from tools.execute_query import ExecuteQueryRequest
 
 # Crea el servidor FastMCP
 mcp = FastMCP("DBAgentServer", version="0.1.0")
@@ -10,7 +10,7 @@ mcp = FastMCP("DBAgentServer", version="0.1.0")
 # Registra las tools
 
 @mcp.tool
-def execute_query(query: ExecuteQueryRequest) -> list[dict]:
+def execute_query(query: ExecuteQueryInput) -> list[dict]:
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
     Usa con precaución: solo acepta SELECTs u operaciones seguras.
