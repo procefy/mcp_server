@@ -1,17 +1,15 @@
 # main.py
-from typing import Union
 from fastmcp import FastMCP
 from database.connection import describe_db, execute_sql, get_engine
-from tools.execute_query import ExecuteQueryRequest
 # from tools.execute_query import ExecuteQueryRequest
 
 # Crea el servidor FastMCP
-app = FastMCP("DBAgentServer", version="0.1.0")
+mcp = FastMCP("DBAgentServer", version="0.1.0")
 
 # Registra las tools
 
-@app.tool
-def execute_query(request) -> list[dict]:
+@mcp.tool
+def execute_query(request: str) -> list[dict]:
     print("**" * 25)
     print("Datos recibidos:", request)
     print("Datos recibidos:", type(request))
@@ -41,7 +39,7 @@ def execute_query(request) -> list[dict]:
     
     return execute_sql(request.query)
 
-@app.tool
+@mcp.tool
 def describe_tables(request) -> dict:
     print("--" * 25)
     print("Datos recibidos:", request)
@@ -50,7 +48,7 @@ def describe_tables(request) -> dict:
     """Devuelve la estructura de la base de datos (tablas y columnas)"""
     return describe_db()
 
-@app.tool
+@mcp.tool
 def health_check(request) -> dict:
     print("*-" * 25)
     print("Datos recibidos:", request)
