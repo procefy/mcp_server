@@ -20,7 +20,7 @@ def execute_query(query: str) -> list[dict]:
     print("Datos recibidos:", type(query))
     print("**" * 25)
     # Seguridad básica para evitar operaciones destructivas
-    lowered = execute.query.strip().lower()
+    lowered = query.strip().lower()
     if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter"]):
         return [{"error": "Solo se permiten consultas SELECT seguras"}]
 
