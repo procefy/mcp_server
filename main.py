@@ -26,19 +26,11 @@ mcp = FastMCP(
 # 🔹 TOOLS
 # ------------------------
 @mcp.tool
-def execute_query(input: Union[ExecuteQueryInput, str, dict]) -> List[Dict[str, Any]]:
+def execute_query(query: str) -> list[dict]:
     """
     Ejecuta un query SQL y retorna los resultados.
     Tolera entradas tipo string, dict o modelo Pydantic.
     """
-    # Normaliza el input
-    if isinstance(input, str):
-        query = input
-    elif isinstance(input, dict):
-        query = input.get("query", "")
-    else:
-        query = input.query
-
     print("**" * 25)
     print("Consulta recibida:", query)
     print("Tipo:", type(input))
@@ -63,7 +55,7 @@ def execute_query(input: Union[ExecuteQueryInput, str, dict]) -> List[Dict[str, 
 
 
 @mcp.tool
-def describe_tables() -> Dict[str, Any]:
+def describe_tables() -> dict:
     """Devuelve la estructura de la base de datos (tablas y columnas)."""
     print("--" * 25)
     print("describe_tables invocado")
@@ -72,7 +64,7 @@ def describe_tables() -> Dict[str, Any]:
 
 
 @mcp.tool
-def health_check() -> Dict[str, Any]:
+def health_check() -> dict:
     """Verifica que el servidor esté corriendo correctamente."""
     print("*-" * 25)
     print("health_check invocado")
