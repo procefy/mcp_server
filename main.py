@@ -42,4 +42,4 @@ def health_check() -> dict:
 if __name__ == "__main__":
     engine = get_engine()
     print("✅ Conectado a la base de datos:", engine.url)
-    app.run()
+    mcp.run()
