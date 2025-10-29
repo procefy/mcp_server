@@ -9,14 +9,14 @@ mcp = FastMCP("DBAgentServer", version="0.1.0")
 # Registra las tools
 
 @mcp.tool
-def execute_query(request: str) -> list[dict]:
+def execute_query(query: str) -> list[dict]:
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
     Usa con precaución: solo acepta SELECTs u operaciones seguras.
     """
     print("**" * 25)
-    print("Datos recibidos:", request)
-    print("Datos recibidos:", type(request))
+    print("Datos recibidos:", query)
+    print("Datos recibidos:", type(query))
     print("**" * 25)
     # Seguridad básica para evitar operaciones destructivas
     lowered = query.strip().lower()
