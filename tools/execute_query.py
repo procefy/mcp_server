@@ -4,7 +4,6 @@ from pydantic import BaseModel, ConfigDict
 
 class ExecuteQueryRequest(BaseModel):
     query: str
-    toolCallId: str | None = None
     model_config = ConfigDict(extra="ignore")
 
 
