@@ -26,13 +26,8 @@ def describe_db():
     return schema
 
 def execute_sql(query: str):
-    try:
-        engine = get_engine()
-        with engine.connect() as conn:
-            result = conn.execute(text(query))
-            # Convierte a lista de diccionarios (mappings)
-            rows = result.mappings().all()
-            return [dict(r) for r in rows]
-    except Exception as e:
-        print("❌ Error ejecutando query:", e)
-        return [{"error": str(e)}]
+    engine = get_engine()
+    with engine.connect() as conn:
+        result = conn.execute(text(query))
+        rows = [dict(row._mapping) for row in result]
+    return rows

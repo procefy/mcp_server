@@ -10,9 +10,7 @@ from database.connection import describe_db, execute_sql, get_engine
 # ------------------------
 class ExecuteQueryInput(BaseModel):
     query: str
-
-    class Config:
-        extra = "ignore"  # Ignora cualquier campo adicional como toolCallId, tool, etc.
+    model_config = {"extra": "ignore"}
 
 
 # ------------------------
@@ -22,18 +20,6 @@ mcp = FastMCP(
     "DBAgentServer",
     version="0.1.0",
 )
-
-
-# ------------------------
-# 🔹 MIDDLEWARE: Limpia toolCallId antes de validar
-# ------------------------
-@mcp.middleware("tool")
-async def strip_toolcallid(request, handler):
-    """Elimina toolCallId u otros campos inesperados antes de llegar al validador."""
-    if isinstance(request.data, dict):
-        request.data.pop("toolCallId", None)
-        request.data.pop("tool", None)
-    return await handler(request)
 
 
 # ------------------------
