@@ -14,16 +14,29 @@ app = FastMCP("DBAgentServer", version="0.1.0")
 def execute_query(request: Union[ExecuteQueryRequest, dict]) -> list[dict]:
     print("Datos recibidos:", request)
 # def execute_query(request: ExecuteQueryRequest) -> list[dict]:
+    # """
+    # Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
+    # Usa con precaución: solo acepta SELECTs u operaciones seguras.
+    # """
+    # # Seguridad básica para evitar operaciones destructivas
+    # lowered = execute.query.strip().lower()
+    # if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter"]):
+    #     return [{"error": "Solo se permiten consultas SELECT seguras"}]
+
+    # return execute_sql(execute.query)
     """
     Ejecuta un query SQL y retorna los resultados en formato lista de diccionarios.
-    Usa con precaución: solo acepta SELECTs u operaciones seguras.
     """
+    if isinstance(request, dict):
+        # Crear una instancia del modelo ignorando campos adicionales
+        request = ExecuteQueryRequest(**request)
+
     # Seguridad básica para evitar operaciones destructivas
-    lowered = execute.query.strip().lower()
+    lowered = request.query.strip().lower()
     if any(keyword in lowered for keyword in ["drop", "delete", "update", "insert", "alter"]):
         return [{"error": "Solo se permiten consultas SELECT seguras"}]
-
-    return execute_sql(execute.query)
+    
+    return execute_sql(request.query)
 
 @app.tool
 def describe_tables(execute: ExecuteQueryRequest) -> dict:
